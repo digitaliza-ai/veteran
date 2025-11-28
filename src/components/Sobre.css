@@ -1,0 +1,125 @@
+.sobre {
+  padding: 120px 2rem 40px;
+  background: linear-gradient(180deg, var(--background) 0%, var(--primary-color) 100%);
+}
+
+.sobre-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 3rem;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
+.sobre-content {
+  margin-bottom: 2rem;
+}
+
+.sobre-text {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: justify;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.sobre-text p {
+  margin-bottom: 0.8rem;
+}
+
+.sobre-text strong {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.sobre-images {
+  margin-top: 2rem;
+}
+
+.images-title {
+  font-size: 2rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.image-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  aspect-ratio: 4/3;
+}
+
+.image-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.image-card:hover img {
+  transform: scale(1.1);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .sobre {
+    padding: 120px 1rem 40px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .sobre-text {
+    font-size: 1rem;
+  }
+
+  .images-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+

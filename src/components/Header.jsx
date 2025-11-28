@@ -29,6 +29,7 @@ const Header = () => {
         </div>
         <nav className="nav">
           <button onClick={() => scrollToSection('sobre')}>Sobre</button>
+          <button onClick={() => scrollToSection('galeria')}>Galeria</button>
           <button onClick={() => scrollToSection('contato')}>Contato</button>
           <button onClick={() => scrollToSection('endereco')}>Endereço</button>
         </nav>
@@ -38,4 +39,8 @@ const Header = () => {
 }
 
 export default Header
+
+
+
+
 

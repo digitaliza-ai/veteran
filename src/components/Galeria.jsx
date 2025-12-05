@@ -6,28 +6,57 @@ const Galeria = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
 
+  const fetchDriveImages = async (folderId) => {
+    try {
+      const API_KEY = import.meta.env.VITE_API_KEY;
+      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+mimeType+contains+'image/'&key=${API_KEY}&fields=files(id,name,webViewLink,webContentLink)`;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.error("Erro na API do Google Drive:", data.error);
+        return { error: data.error };
+      }
+
+      return { files: data.files || [] };
+    } catch (error) {
+      console.error("Erro ao buscar imagens:", error);
+      return { error: error.message };
+    }
+  };
+
+  const getDirectImageUrl = (fileId) => {
+    return `https://lh3.googleusercontent.com/d/${fileId}=s500?authuser=0`;
+  };
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        // Substitua 'YOUR_FOLDER_ID' pelo ID da pasta do Google Drive
-        // const folderId = 'YOUR_FOLDER_ID'
-        // const apiKey = 'YOUR_API_KEY'
-        // const response = await fetch(
-        //   `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${apiKey}`
-        // )
-        // const data = await response.json()
+        const folderId = import.meta.env.VITE_GALERIA_FOLDER_ID;
+        const result = await fetchDriveImages(folderId);
         
-        // Por enquanto, usando imagens placeholder
-        // Você pode substituir isso pela integração real do Google Drive
-        setImages([
-          'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Imagem+1',
-          'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Imagem+2',
-          'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Imagem+3',
-        ])
-        setLoading(false)
+        if (result.error) {
+          console.error('Erro ao carregar imagens do Google Drive:', result.error);
+          setImages([
+            'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Erro+ao+carregar'
+          ]);
+        } else {
+          const imageUrls = result.files.map(file => getDirectImageUrl(file.id));
+          setImages(imageUrls);
+        }
+        
+        setLoading(false);
       } catch (error) {
-        console.error('Erro ao carregar imagens:', error)
-        setLoading(false)
+        console.error('Erro ao carregar imagens:', error);
+        setImages([
+          'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Erro+ao+carregar'
+        ]);
+        setLoading(false);
       }
     }
 
@@ -50,14 +79,13 @@ const Galeria = () => {
     setCurrentIndex(index)
   }
 
-  // Auto-play do carrossel
   useEffect(() => {
     if (images.length > 0) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) => 
           prevIndex === images.length - 1 ? 0 : prevIndex + 1
         )
-      }, 5000) // Muda a imagem a cada 5 segundos
+      }, 5000)
 
       return () => clearInterval(interval)
     }

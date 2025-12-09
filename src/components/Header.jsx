@@ -5,7 +5,6 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [logoUrl, setLogoUrl] = useState('')
 
-  // Função para buscar logo do Google Drive
   const fetchDriveLogo = async (folderId) => {
     try {
       const API_KEY = import.meta.env.VITE_API_KEY;

@@ -73,14 +73,13 @@ const Header = () => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         <div className="logo">
-          {logoUrl ? (
+          {logoUrl && (
             <img src={logoUrl} alt="VETERAN Logo" className="logo-image" />
-          ) : (
-            <>
-              <h1>VETERAN</h1>
-              <span>Segurança e Automação</span>
-            </>
           )}
+          <div className="logo-text">
+            <h1>VETERAN</h1>
+            <span>Segurança e Automação</span>
+          </div>
         </div>
         <nav className="nav">
           <button onClick={() => scrollToSection('sobre')}>Sobre</button>

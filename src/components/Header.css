@@ -24,6 +24,17 @@
   align-items: center;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
 .logo h1 {
   font-size: 1.8rem;
   color: var(--accent-color);
@@ -40,13 +51,12 @@
 }
 
 .logo-image {
-  height: 50px;
-  width: auto;
-  max-width: 200px;
-  object-fit: contain;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 4px;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
 }
 
 .nav {

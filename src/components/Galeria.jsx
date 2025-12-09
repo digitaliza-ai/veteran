@@ -8,55 +8,59 @@ const Galeria = () => {
 
   const fetchDriveImages = async (folderId) => {
     try {
-      const API_KEY = import.meta.env.VITE_API_KEY;
-      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+mimeType+contains+'image/'&key=${API_KEY}&fields=files(id,name,webViewLink,webContentLink)`;
-      const response = await fetch(url);
+      const API_KEY = import.meta.env.VITE_API_KEY
+      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+(mimeType='image/jpeg'+or+mimeType='image/png'+or+mimeType='image/webp'+or+mimeType='image/jpg'+or+mimeType='image/gif')&key=${API_KEY}&fields=files(id,name,mimeType)`
+      const response = await fetch(url)
 
       if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
+        throw new Error(`Erro HTTP: ${response.status}`)
       }
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (data.error) {
-        console.error("Erro na API do Google Drive:", data.error);
-        return { error: data.error };
+        console.error('Erro na API do Google Drive:', data.error)
+        return { error: data.error }
       }
 
-      return { files: data.files || [] };
+      return { files: data.files || [] }
     } catch (error) {
-      console.error("Erro ao buscar imagens:", error);
-      return { error: error.message };
+      console.error('Erro ao buscar imagens:', error)
+      return { error: error.message }
     }
-  };
+  }
 
   const getDirectImageUrl = (fileId) => {
-    return `https://lh3.googleusercontent.com/d/${fileId}=s500?authuser=0`;
-  };
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`
+  }
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const folderId = import.meta.env.VITE_GALERIA_FOLDER_ID;
-        const result = await fetchDriveImages(folderId);
+        const folderId = import.meta.env.VITE_GALERIA_FOLDER_ID
+        const result = await fetchDriveImages(folderId)
         
         if (result.error) {
-          console.error('Erro ao carregar imagens do Google Drive:', result.error);
+          console.error('Erro ao carregar imagens do Google Drive:', result.error)
           setImages([
             'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Erro+ao+carregar'
-          ]);
+          ])
+        } else if (result.files && result.files.length > 0) {
+          const imageUrls = result.files.map(file => getDirectImageUrl(file.id))
+          setImages(imageUrls)
         } else {
-          const imageUrls = result.files.map(file => getDirectImageUrl(file.id));
-          setImages(imageUrls);
+          setImages([
+            'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Nenhuma+imagem+encontrada'
+          ])
         }
         
-        setLoading(false);
+        setLoading(false)
       } catch (error) {
-        console.error('Erro ao carregar imagens:', error);
+        console.error('Erro ao carregar imagens:', error)
         setImages([
           'https://via.placeholder.com/800x600/2d2d2d/d4af37?text=Erro+ao+carregar'
-        ]);
-        setLoading(false);
+        ])
+        setLoading(false)
       }
     }
 

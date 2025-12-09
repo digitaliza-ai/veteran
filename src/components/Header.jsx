@@ -9,7 +9,7 @@ const Header = () => {
   const fetchDriveLogo = async (folderId) => {
     try {
       const API_KEY = import.meta.env.VITE_API_KEY;
-      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+mimeType+contains+'image/'&key=${API_KEY}&fields=files(id,name,webViewLink,webContentLink)`;
+      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+(mimeType='image/jpeg'+or+mimeType='image/png'+or+mimeType='image/webp'+or+mimeType='image/jpg'+or+mimeType='image/gif')&key=${API_KEY}&fields=files(id,name,mimeType)`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   const getDirectImageUrl = (fileId) => {
-    return `https://lh3.googleusercontent.com/d/${fileId}=s200?authuser=0`;
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
   };
 
   useEffect(() => {
@@ -52,7 +52,6 @@ const Header = () => {
         if (result.error || !result.files || result.files.length === 0) {
           console.error('Erro ao carregar logo ou pasta vazia');
         } else {
-          // Pega o primeiro arquivo da pasta
           const logoFileId = result.files[0].id;
           setLogoUrl(getDirectImageUrl(logoFileId));
         }
